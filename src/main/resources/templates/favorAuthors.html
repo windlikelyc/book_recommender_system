@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"/>
+<head>
+    <meta charset="UTF-8"/>
+    <title>Title</title>
+</head>
+<link rel="stylesheet" th:href="@{/css/bootstrap.css}" />
+<link rel="stylesheet" th:href="@{/css/booksize.css}"  />
+<script th:src="@{/js/jquery-2.0.3.min.js}"/>
+<script th:src="@{/js/bootstrap.min.js}"/>
+<body>
+<div class="container">
+    <div class="row"><h1 style=" text-align:center;">欢迎来到读书推荐系统</h1></div>
+    <div class="row">
+        <div class="col-xs-12">
+            <ul class="nav nav-tabs">
+                <li class="active">   <a href="welcome">新书速递</a> </li>
+                <li class="disabled"> <a href="getLatesBooks">偏好作者</a> </li>
+                <li class="disabled"> <a href="#">我的书单</a> </li>
+                <li class="dropdown pull-right"> <a class="dropdown-toggle" data-toggle="dropdown" href="#">个人信息</a>
+                    <ul class="dropdown-menu">
+                        <li> <a href="#">切换账号</a> </li>
+                        <li> <a href="#">个人信息</a> </li>
+                        <li> <a href="#">我的书单</a> </li>
+                        <li> <a href="#">阅读历史</a> </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

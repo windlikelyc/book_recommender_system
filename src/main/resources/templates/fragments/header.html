@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head lang="en">
+    <meta charset="UTF-8"/>
+    <title>index</title>
+</head>
+<body>
+
+
+<div th:fragment="header">
+    <div class="row">
+
+        <div class="col-xs-4"><img th:src="@{images/bupt.png}" height="70" width="236"/></div>
+        <div class="col-xs-8">
+            <h1>
+                <span  th:text="${slogan}"/>
+            </h1>
+        </div>
+    </div>
+    <br/>
+    <div class="row">
+        <div class="col-xs-12">
+            <ul class="nav nav-tabs">
+                <li th:class="${welcome_active_flag}"><a th:href="@{/welcome}">随便看看</a></li>
+                <li th:class="${mylist_active_flag}"><a th:href="@{/favor}">我的书单</a></li>
+                <li th:class="${recommend_active_flag}"><a th:href="@{/recommend}"> 为我推荐 </a></li>
+                <li th:class="${new_book_flag}"><a th:href="@{/getLatesBooks}"> 新书速递 </a></li>
+
+                <li class="disabled"><a href="#"> 相似图书 </a></li>
+
+                <li class="dropdown pull-right"><a class="dropdown-toggle" data-toggle="dropdown" href="#">个人信息</a>
+                    <ul class="dropdown-menu">
+                        <li><a th:href="@{/logout}">切换账号</a></li>
+                        <li><a href="#">个人信息</a></li>
+                        <li><a href="#">我的书单</a></li>
+                        <li><a href="#">阅读历史</a></li>
+                    </ul>
+                </li>
+
+            </ul>
+        </div>
+    </div>
+</div>
+
+
+</body>
+</html>

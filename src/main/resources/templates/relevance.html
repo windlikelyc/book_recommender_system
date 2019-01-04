@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head lang="en">
+    <meta charset="UTF-8"/>
+    <title>index</title>
+</head>
+
+<link rel="stylesheet" th:href="@{/css/bootstrap.css}"/>
+<link rel="stylesheet" th:href="@{/css/booksize.css}"/>
+<script th:src="@{/js/jquery-2.0.3.min.js}"/>
+<script th:src="@{/js/bootstrap.min.js}"/>
+
+
+<body>
+
+<div class="container">
+    <div th:include="  fragments/header :: header"></div>
+    <div th:each="rows_id:${rows}">
+        <div class="row">
+            <div th:each="col_big_id : ${cols_big}">
+                <div class="col-xs-6">
+                    <div class="row">
+                        <div th:each="cols_sm_id : ${cols_sm}">
+                            <div class="col-xs-4">
+                                <a th:href="@{/bookDetail(id=${newbook[rows_id*6+col_big_id*3+cols_sm_id].id})}">
+                                    <img  style="height: 120px;width: 83px" alt="140x140" th:src="@{${newbook[rows_id*6+col_big_id*3+cols_sm_id].image}}"/>
+                                </a>
+                                <div class="row">
+                                    <div class="col-xs-12"
+                                         style="white-space:nowrap;text-overflow:ellipsis;overflow:hidden;">
+                                        <div th:text="${newbook[rows_id*6+col_big_id*3+cols_sm_id].title}"></div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-xs-12">
+                                        <div class="btn-group">
+                                            <button class="btn ">操作</button>
+                                            <button data-toggle="dropdown" class=" btn dropdown-toggle"><span
+                                                    class="caret"></span></button>
+                                            <ul class="dropdown-menu">
+                                                <li><a th:href="@{/add(type=1,id=${newbook[rows_id*6+col_big_id*3+cols_sm_id].id})}">加入书单</a></li>
+                                                <li><a th:href="@{/add(type=2,id=${newbook[rows_id*6+col_big_id*3+cols_sm_id].id})}">喜欢！</a></li>
+                                                <li><a th:href="@{/add(type=3,id=${newbook[rows_id*6+col_big_id*3+cols_sm_id].id})}">无感！</a></li>
+                                                <li><a href="#" th:href="@{ '/relevance?id='+${newbook[rows_id*6+col_big_id*3+cols_sm_id].id}}">找相似</a></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <br/>
+        <div class="col-md-2 col-md-offset-5">
+        </div>
+    </div>
+</div>
+
+
+</body>
+</html>

@@ -1,0 +1,5 @@
+/.idea
+/target
+/src/main/java/com/lyc/doubandata
+/src/main/java/com/lyc/lda
+/src/main/resources/application-prod.properties
