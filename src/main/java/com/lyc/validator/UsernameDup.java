@@ -1,12 +1,7 @@
 package com.lyc.validator;
 
 
-
-import com.lyc.service.ClientService;
-
 import javax.validation.Constraint;
-import javax.validation.ConstraintValidator;
-import javax.validation.ConstraintValidatorContext;
 import javax.validation.Payload;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;

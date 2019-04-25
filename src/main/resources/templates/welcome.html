@@ -9,18 +9,22 @@
 
 <link rel="stylesheet" th:href="@{/css/bootstrap.css}"/>
 <link rel="stylesheet" th:href="@{/css/booksize.css}"/>
+
 <script th:src="@{/js/jquery-2.0.3.min.js}"/>
 <script th:src="@{/js/bootstrap.min.js}"/>
 
+<script>
+    function displayDate() {
+    }
+</script>
 
 <body>
-
 <div class="container">
 
     <div th:include="  fragments/header :: header"></div>
 
-    <div class="row">
-        <div th:class="col-xs-10">
+    <div class="row" >
+        <div th:class="col-xs-10" >
 
             <div th:each="rows_id:${rows}">
                 <div class="row">
@@ -28,7 +32,7 @@
                         <div class="col-xs-6">
                             <div class="row">
                                 <div th:each="cols_sm_id : ${cols_sm}">
-                                    <div class="col-xs-4">
+                                    <div class="col-xs-4" th:if="${  newbook.size() } gt  ${rows_id*6+col_big_id*3+cols_sm_id} ">
                                         <a th:href="@{/bookDetail(id=${newbook[rows_id*6+col_big_id*3+cols_sm_id].id})}">
                                             <img style="height: 120px;width: 83px" alt="140x140"
                                                  th:src="@{${newbook[rows_id*6+col_big_id*3+cols_sm_id].image}}"/>
@@ -71,9 +75,49 @@
             </div>
             <div class="row">
                 <br/>
-                <div class="col-md-2 col-md-offset-5">
-                    <a th:href="@{/welcome?refresh=1}">换一批看看：</a>
+                <div class="row">
+                    <!--<div class="form-group col-md-1">-->
+                        <!--<select class="form-control pagination" id="pageSizeSelect">-->
+                            <!--<option th:each="pageSize : ${pageSizes}" th:text="${pageSize}"-->
+                                    <!--th:value="${pageSize}"-->
+                                    <!--th:selected="${pageSize} == ${selectedPageSize}"></option>-->
+                        <!--</select>-->
+                    <!--</div>-->
+                    <div th:if="${newbook.total != 1}"
+                         class="form-group col-md-11 pagination-centered">
+                        <ul class="pagination">
+                            <li th:class="${newbook.pageNum == 0} ? disabled"><a
+                                    class="pageLink"  th:object="${searchbook}"
+                                    th:href="@{/welcome(pageSize=${selectedPageSize}, page=1 , searchbook = ${searchbook} )}">&laquo;</a>
+                            </li>
+                            <li th:class="${newbook.pageNum == 0} ? disabled"><a
+                                    class="pageLink"  th:object="${searchbook}"
+                                    th:href="@{/welcome(pageSize=${selectedPageSize}, page=${newbook.pageNum} , t = ${searchbook.title} )}">&larr;</a>
+                            </li>
+                            <li
+                                    th:class="${newbook.pageNum == (page - 1)} ? 'active pointer-disabled'"
+                                    th:each="page : ${#numbers.sequence(pager.startPage , pager.endPage)}">
+                                <a class="pageLink"  th:object="${searchbook}"
+                                   th:href="@{/welcome(pageSize=${selectedPageSize}, page=${page} , t = ${searchbook.title} )}"
+                                   th:text="${page}"></a>
+                            </li>
+                            <li
+                                    th:class="${newbook.pageNum + 1 == newbook.pages} ? disabled">
+                                <a class="pageLink"  th:object="${searchbook}"
+                                   th:href="@{/welcome(pageSize=${selectedPageSize}, page=${newbook.pageNum + 2} ,t = ${searchbook.title}  )}">&rarr;</a>
+                            </li>
+                            <li
+                                    th:class="${newbook.pageNum + 1 == newbook.total} ? disabled">
+                                <a class="pageLink"  th:object="${searchbook}"
+                                   th:href="@{/welcome(pageSize=${selectedPageSize}, page=${newbook.pages} , t = ${searchbook.title} )}">&raquo;</a>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
+                <!--<div class="col-md-2 col-md-offset-7">-->
+                    <!--<a th:href="@{/welcome?refresh=1}">换一批看看：</a>-->
+                <!--</div>-->
+
             </div>
         </div>
         <div th:class="col-xs-2">
@@ -93,8 +137,8 @@
                             <li data-target="#myCarousel" data-slide-to="2"></li>
                         </ol>
                         <!-- 轮播（Carousel）项目 -->
-                        <div class="carousel-inner" >
-                            <div class="item active " >
+                        <div class="carousel-inner">
+                            <div class="item active ">
                                 <img class="center-block" src="https://img3.doubanio.com/mpic/s2964886.jpg"
                                      alt="通用的占位符缩略图"/>
                             </div>
@@ -103,7 +147,7 @@
                                      alt="通用的占位符缩略图"/>
                             </div>
                             <div class="item">
-                                <img  class="center-block" src="https://img3.doubanio.com/mpic/s2964886.jpg"
+                                <img class="center-block" src="https://img3.doubanio.com/mpic/s2964886.jpg"
                                      alt="通用的占位符缩略图"/>
                             </div>
                         </div>
@@ -128,20 +172,21 @@
                     <h5 th:class="text-center">图书检索</h5>
                 </div>
                 <div class="panel-body">
-                    <form class="bs-example bs-example-form" role="form">
+                    <form class="bs-example bs-example-form" role="form" th:action="@{/welcome.html}" th:method="get"
+                          th:object="${searchbook}">
                         <div class="input-group">
                             <!--<span class="input-group-addon">@</span>-->
-                            <input type="text" class="form-control" placeholder="图书标题"/>
+                            <input th:field="*{title}" type="text" class="form-control" placeholder="图书标题"/>
                         </div>
                         <br/>
                         <div class="btn-group">
                             <select class="selectpicker show-tick form-control" data-live-search="true">
                                 <option>类别</option>
-                                <option>江西(jiangxi)</option>
-                                <option>湖北(hubei)</option>
-                                <option>上海(shanghai)</option>
-                                <option>北京(beijing)</option>
-                                <option>河北(hebei)</option>
+                                <option>历史</option>
+                                <option>小说</option>
+                                <option>文学</option>
+                                <option>科技</option>
+                                <option>经济</option>
                             </select>
                         </div>
                         <br/>
@@ -154,9 +199,6 @@
         </div>
     </div>
 
-
 </div>
-
-
 </body>
 </html>

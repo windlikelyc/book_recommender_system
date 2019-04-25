@@ -644,4 +644,57 @@ public class JIMVersion3 {
     }
 
 
+//     阿里云服务器redis数据丢失的时候运行以下方法将 用户id映射到seq，并将图书id映射到seq
+    public static void main(String[] args) throws IOException {
+
+        File file = new File("F:\\data_origin.txt");
+
+        Map<String, String> usermap = new HashMap<>();
+        Map<String, String> bookmap = new HashMap<>();
+
+        BufferedReader reader = null;
+
+        String line;
+        int useq = 0;
+        int bseq = 0;
+
+        try {
+            reader = new BufferedReader(new FileReader(file));
+
+            while ( ( line = reader.readLine() )  != null) {
+
+                String[] temp = line.split("\t");
+
+                if (usermap.get(temp[0]) == null) {
+                    usermap.put(temp[0],  String.valueOf(useq++ ));
+                }
+                if (bookmap.get(temp[1]) == null) {
+                    bookmap.put(temp[1] , String.valueOf(bseq++ ));
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            reader.close();
+        }
+        RedisService redisService = new RedisService();
+        Jedis jedis = null;
+        try {
+            jedis = new Jedis("39.106.39.216", 6379);
+
+            for (Map.Entry<String ,String> e : usermap.entrySet()) {
+                jedis.hset("userId_to_seq", e.getKey(), e.getValue());
+            }
+
+            for (Map.Entry<String ,String> t : bookmap.entrySet()) {
+                jedis.hset("seq_to_bookId", t.getValue(), t.getKey());
+            }
+
+
+        }finally {
+            jedis.close();
+        }
+
+    }
+
 }

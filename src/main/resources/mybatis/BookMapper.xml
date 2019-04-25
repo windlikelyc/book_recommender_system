@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.lyc.mapper.DBookMapper" >
+    <!--<cache />-->
+    <resultMap id="baseResultMap" type="com.lyc.entity.BookEntity" >
+        <id column="id" property="id" jdbcType="VARCHAR" />
+        <result column="title" property="title" jdbcType="VARCHAR" />
+        <result column="img" property="image" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List" >
+        book.id, title , img
+    </sql>
+
+    <select id="findByPage" resultMap="baseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from book
+    </select>
+
+    <select id="filtering" parameterType="String" resultMap="baseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from book
+        left join book_img on book.id = book_img.id
+        <if test="t != null">
+            where title LIKE '%' #{t} '%'
+        </if>
+    </select>
+</mapper>

@@ -1,5 +1,6 @@
 package com.lyc.mapper;
 
+import com.github.pagehelper.Page;
 import com.lyc.entity.BookEntity;
 import org.apache.ibatis.annotations.*;
 
@@ -43,7 +44,23 @@ public interface BookMapper {
             @Result(property = "title", column = "title"),
             @Result(property = "image", column = "img")
     })
-    BookEntity findBooksById(@Param("id") String id);
+    BookEntity findBookById(@Param("id") String id);
+
+
+
+    /**
+     *  查找全部书籍，供分页测试使用
+     * @param
+     * @param title
+     * @return
+     */
+    @Select("SELECT book.id,title,img FROM book left join book_img on book.id = book_img.id where title like '%' + #{t} + '%' ")
+    @Results({
+            @Result(property = "id", column = "id"),
+            @Result(property = "title", column = "title"),
+            @Result(property = "image", column = "img")
+    })
+    Page<BookEntity> findBooks(@Param("t") String t);
 
 
     /**

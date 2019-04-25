@@ -2,6 +2,7 @@ package com.lyc.service;
 
 import com.lyc.entity.Client;
 import com.lyc.entity.ClientEntity;
+import com.lyc.entity.ClientFeedBack;
 import com.lyc.entity.ClientHistory;
 import com.lyc.mapper.ClientMapper;
 import org.slf4j.Logger;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -48,7 +50,7 @@ public class ClientService implements UserDetailsService {
         return client;
     }
 
-    // 0: 点击 2:喜欢   3:不喜欢    1:加入书单
+    // 0: 点击 2:喜欢   3:不喜欢    1:加入书单   6 - 10： 以0.5 为一个维度的评分，其中0.5 = 6
     public void addToUserHistory(String bookid, int type) {
 
         UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -90,5 +92,27 @@ public class ClientService implements UserDetailsService {
 
     public void deleteHistoryById(int id) {
         clientMapper.deleteHistoryById(id);
+    }
+
+    public void insertComments(ClientFeedBack clientFeedBack) {
+
+        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        clientFeedBack.setUserName(userDetails.getUsername());
+        clientFeedBack.setCreateTime(new Date());
+        clientMapper.insertComments(clientFeedBack);
+    }
+
+    public void insertLabels(ClientFeedBack clientFeedBack) {
+
+        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        clientFeedBack.setUserName(userDetails.getUsername());
+        clientFeedBack.setCreateTime(new Date());
+
+        try {
+            clientMapper.insertLabels(clientFeedBack);
+        } catch (Exception exception) {
+            System.out.println(exception);
+        }
+
     }
 }

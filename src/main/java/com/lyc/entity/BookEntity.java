@@ -17,6 +17,9 @@ public class BookEntity {
     private List<String> author;
     private String pubdate;
     private List<Tag> tags;
+
+    private List<String> labels;
+
     private String catalog;
     private String author_intro;
     private String pages;
@@ -31,4 +34,13 @@ public class BookEntity {
 
     // 图书的大小
     private int rank;
+
+
+    // 本系统中用户对图书的反馈
+    private List<String> comments;
+
+    // 一本书中所有用户的反馈
+    private List<String> allComments;
+
+
 }
