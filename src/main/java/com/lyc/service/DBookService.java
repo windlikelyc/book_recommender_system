@@ -34,4 +34,10 @@ public class DBookService {
         PageHelper.startPage(pageNo, pageSize);
         return dBookMapper.filtering(title);
     }
+
+    public Page<BookEntity> findAllByCat(int pageNo, int pageSize, String cat) {
+        PageHelper.startPage(pageNo, pageSize);
+        return dBookMapper.filtering2(cat);
+    }
+
 }

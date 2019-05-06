@@ -27,4 +27,19 @@
             where title LIKE '%' #{t} '%'
         </if>
     </select>
+
+    <select id="filtering2" parameterType="String" resultMap="baseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        FROM
+        (SELECT
+        book_id
+        FROM
+        `book_tags`
+        WHERE
+        tag_name = #{t})
+        AS btg
+        LEFT JOIN book ON btg.book_id = book.id
+        LEFT JOIN book_img ON btg.book_id = book_img.id
+    </select>
 </mapper>

@@ -16,4 +16,8 @@ public interface DBookMapper {
     Page<Dbook> findByPage();
 
     Page<BookEntity> filtering(@Param("t") String t);
+
+    Page<BookEntity> filtering2(@Param("t") String t);
+
+
 }

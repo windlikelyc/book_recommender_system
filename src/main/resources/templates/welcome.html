@@ -92,24 +92,24 @@
                             </li>
                             <li th:class="${newbook.pageNum == 0} ? disabled"><a
                                     class="pageLink"  th:object="${searchbook}"
-                                    th:href="@{/welcome(pageSize=${selectedPageSize}, page=${newbook.pageNum} , t = ${searchbook.title} )}">&larr;</a>
+                                    th:href="@{/welcome(pageSize=${selectedPageSize}, page=${newbook.pageNum} , t = ${searchbook.title} , c= ${searchbook.cat} )}">&larr;</a>
                             </li>
                             <li
                                     th:class="${newbook.pageNum == (page - 1)} ? 'active pointer-disabled'"
-                                    th:each="page : ${#numbers.sequence(pager.startPage , pager.endPage)}">
+                                    th:each="page : ${#numbers.sequence(pager.startPage  , pager.endPage )}">
                                 <a class="pageLink"  th:object="${searchbook}"
-                                   th:href="@{/welcome(pageSize=${selectedPageSize}, page=${page} , t = ${searchbook.title} )}"
-                                   th:text="${page}"></a>
+                                   th:href="@{/welcome(pageSize=${selectedPageSize}, page=${page} , t = ${searchbook.title}, c= ${searchbook.cat} )}"
+                                   th:text="${page - 1}"></a>
                             </li>
                             <li
                                     th:class="${newbook.pageNum + 1 == newbook.pages} ? disabled">
                                 <a class="pageLink"  th:object="${searchbook}"
-                                   th:href="@{/welcome(pageSize=${selectedPageSize}, page=${newbook.pageNum + 2} ,t = ${searchbook.title}  )}">&rarr;</a>
+                                   th:href="@{/welcome(pageSize=${selectedPageSize}, page=${newbook.pageNum + 2} ,t = ${searchbook.title}, c= ${searchbook.cat}  )}">&rarr;</a>
                             </li>
                             <li
                                     th:class="${newbook.pageNum + 1 == newbook.total} ? disabled">
                                 <a class="pageLink"  th:object="${searchbook}"
-                                   th:href="@{/welcome(pageSize=${selectedPageSize}, page=${newbook.pages} , t = ${searchbook.title} )}">&raquo;</a>
+                                   th:href="@{/welcome(pageSize=${selectedPageSize}, page=${newbook.pages} , t = ${searchbook.title}, c= ${searchbook.cat} )}">&raquo;</a>
                             </li>
                         </ul>
                     </div>
@@ -147,7 +147,7 @@
                                      alt="通用的占位符缩略图"/>
                             </div>
                             <div class="item">
-                                <img class="center-block" src="https://img3.doubanio.com/mpic/s2964886.jpg"
+                                <img class="center-block" src="https://img3.doubanio.com/mpic/s1000280.jpg"
                                      alt="通用的占位符缩略图"/>
                             </div>
                         </div>
@@ -180,13 +180,13 @@
                         </div>
                         <br/>
                         <div class="btn-group">
-                            <select class="selectpicker show-tick form-control" data-live-search="true">
-                                <option>类别</option>
-                                <option>历史</option>
-                                <option>小说</option>
-                                <option>文学</option>
-                                <option>科技</option>
-                                <option>经济</option>
+                            <select th:field="*{cat}" th:remove="none" class="selectpicker show-tick form-control" data-live-search="true">
+                                <option th:value="all">类别</option>
+                                <option th:value="历史">历史</option>
+                                <option th:value="科幻">科幻</option>
+                                <option th:value="外国文学 ">外国文学</option>
+                                <option th:value="职场">职场</option>
+                                <option th:value="人生">人生</option>
                             </select>
                         </div>
                         <br/>

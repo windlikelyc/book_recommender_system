@@ -56,6 +56,7 @@ public class WelcomeController {
     @RequestMapping("/welcome") // 获取用户书籍，放到redis例
     public String welcome(@ModelAttribute(value = "searchbook") SearchBook searchBook,
                           @RequestParam("t") Optional<String> t,
+                          @RequestParam("c") Optional<String> c,
                           @RequestParam("pageSize") Optional<Integer> pageSize,
             @RequestParam("page") Optional<Integer> page,
             ModelMap map, HttpServletRequest request) {
@@ -73,16 +74,25 @@ public class WelcomeController {
             if (t.isPresent()) {
                 searchBook.setTitle(t.get());
             }
+            if (c.isPresent()) {
+                searchBook.setCat(c.get());
+            }
+
             map.addAttribute("searchbook", searchBook);
         }
 
 
-        System.out.println(searchBook.getTitle() == null ? "空检索标题" : searchBook.getTitle());
 
         int evalPageSize = pageSize.orElse(18);
         int evalPageNo = page.orElse(0) < 1 ? 0 : page.get() - 1;
 
         Page<BookEntity> newbooklist = dBookService.findAll(evalPageNo, evalPageSize , searchBook.getTitle() == null ? t.orElse(null) : searchBook.getTitle());
+
+        if (searchBook.getCat() != null && !searchBook.getCat().equals( "all") && !searchBook.getCat().equals( "")  ) {
+            newbooklist = dBookService.findAllByCat(evalPageNo, evalPageSize , searchBook.getTitle() == null ? t.orElse(null) : searchBook.getCat());
+        }
+
+
         PagerModel pager = new PagerModel(newbooklist.getPages(), newbooklist.getPageNum(), 3);
         if (pager.getStartPage() > pager.getEndPage()) {
             pager.setStartPage(pager.getEndPage());
